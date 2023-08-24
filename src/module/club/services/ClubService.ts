@@ -10,8 +10,8 @@ export default class ClubService {
       return allClubTeams;
     }
 
-    getClub(clubId: number){
-      const clubtoGet = this.ClubRepository.getClub(clubId);
+    async getClub(clubId: number){
+      const clubtoGet = await this.ClubRepository.getClub(clubId);
       return clubtoGet;
     }
 

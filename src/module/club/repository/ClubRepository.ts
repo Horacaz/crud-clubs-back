@@ -17,14 +17,14 @@ export default class ClubRepository{
   }
 
   async getClub(id: number){
-    const clubs = await JSON.parse(this.jsonUrl);
+    const clubs = await JSON.parse(fs.readFileSync(this.jsonUrl, "utf-8"));
     const clubId = Number(id);
     const clubData: IClub = clubs.filter((club: IClub) => club.id === clubId)[0];
     return clubData;
   }
 
   async addClub (crest: string, data: IClub) {
-    const teams = await JSON.parse(this.jsonUrl);
+    const teams = await JSON.parse(fs.readFileSync(this.jsonUrl, "utf-8"));
     const lastId = teams[teams.length - 1].id;
     const newTeam = {
           id: lastId + 1,
@@ -44,19 +44,18 @@ export default class ClubRepository{
           venue: data.venue || null,
           lastUpdated: new Date().toLocaleString(),
   };
-
     teams.push(newTeam);
-    fs.writeFileSync("./db.json", JSON.stringify(teams));
+    fs.writeFileSync(this.jsonUrl, JSON.stringify(teams));
   }
     
-  deleteClub = async (IdClubToDelete: number) => {
-    const clubs = await JSON.parse(this.jsonUrl);
+   async deleteClub (IdClubToDelete: number){
+    const clubs = await JSON.parse(fs.readFileSync(this.jsonUrl, "utf-8"));
     const filteredClubs = clubs.filter((team: IClub) => team.id !== IdClubToDelete);
-    fs.writeFileSync("./db.json", JSON.stringify(filteredClubs));
+    fs.writeFileSync(this.jsonUrl, JSON.stringify(filteredClubs));
   }
     
-  editClub = async (crest: string, teamId: number, data: IClub) => {
-    const teams = await JSON.parse(this.jsonUrl);
+  async editClub (crest: string, teamId: number, data: IClub) {
+    const teams = await JSON.parse(fs.readFileSync(this.jsonUrl, "utf-8"));
     const teamToEdit = teams.filter((team: IClub) => team.id === teamId)[0];
     const filteredData = Object.entries(data).filter((entry) => entry[1] !== "");
     const parsedData = Object.fromEntries(filteredData);
@@ -64,6 +63,6 @@ export default class ClubRepository{
     editedTeam.lastUpdated = new Date();
     if (parsedData.country) editedTeam.area.name = parsedData.country;
     if(crest) editedTeam.crestUrl = `/images/${crest}`;
-    fs.writeFileSync("./db.json", JSON.stringify(teams));
+    fs.writeFileSync(this.jsonUrl, JSON.stringify(teams));
     }
 }
