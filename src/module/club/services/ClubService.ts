@@ -5,28 +5,28 @@ export default class ClubService {
   constructor(Repository: ClubRepository) {
     this.ClubRepository = Repository;
   }
-    async getAllClubs(){
-      const allClubTeams =  await this.ClubRepository.getAllClubs();
-      return allClubTeams;
-    }
+  async getAllClubs() {
+    const allClubTeams = await this.ClubRepository.getAllClubs();
+    return allClubTeams;
+  }
 
-    async getClub(clubId: number){
-      const clubtoGet = await this.ClubRepository.getClub(clubId);
-      return clubtoGet;
-    }
+  async getClub(clubId: number) {
+    const clubtoGet = await this.ClubRepository.getClub(clubId);
+    return clubtoGet;
+  }
 
-    addClub(crest: string, club: IClub){
-      const clubData = club
-      this.ClubRepository.addClub(crest, clubData);
-    }
+  addClub(club: IClub, crest?: Express.Multer.File) {
+    const clubData = club;
+    this.ClubRepository.addClub(clubData, crest);
+  }
 
-    editClub(crest: string, clubId: number, club: IClub){
-      const dataToEdit = club;
-      this.ClubRepository.editClub(crest, clubId, dataToEdit); 
-    }
+  editClub(club: IClub, clubId: number, crest?: Express.Multer.File) {
+    const dataToEdit = club;
+    this.ClubRepository.editClub(dataToEdit, clubId, crest);
+  }
 
-    deleteClub(clubId: number){
-      const clubToDelete = clubId;
-      this.ClubRepository.deleteClub(clubToDelete);
-    }
+  deleteClub(clubId: number) {
+    const clubToDelete = clubId;
+    this.ClubRepository.deleteClub(clubToDelete);
+  }
 }
