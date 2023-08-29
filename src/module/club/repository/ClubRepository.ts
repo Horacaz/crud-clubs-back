@@ -68,7 +68,7 @@ export default class ClubRepository {
     const editedTeam = Object.assign(teamToEdit, parsedData);
     editedTeam.lastUpdated = new Date();
     if (parsedData.country) editedTeam.area.name = parsedData.country;
-    if (crest) editedTeam.crestUrl = `/images/${crest?.filename}`;
+    if (crest) editedTeam.crestUrl = `/images/${crest?.originalname}`;
     fs.writeFileSync(this.jsonUrl, JSON.stringify(teams));
   }
 }
