@@ -25,7 +25,6 @@ export default class ClubRepository {
   }
 
   async addClub(data: IClub, crest?: Express.Multer.File) {
-    console.log(crest);
     const teams = await JSON.parse(fs.readFileSync(this.jsonUrl, "utf-8"));
     const lastId = teams[teams.length - 1].id;
     const newTeam = {
@@ -36,7 +35,7 @@ export default class ClubRepository {
       name: data.name || null,
       shortName: data.shortName || null,
       tla: data.tla || null,
-      crestUrl: `/images/${crest?.originalname}` || null,
+      crestUrl: `/uploads/${crest?.originalname}` || null,
       address: data.address || null,
       phone: data.phone || null,
       website: data.website || null,

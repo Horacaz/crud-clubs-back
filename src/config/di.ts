@@ -8,18 +8,12 @@ import {
   ClubRepository,
 } from "../module/club/module";
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, "uploads/"),
-  filename: (req, file, cb) => cb(null, file.originalname),
-});
-const upload = multer({ storage: storage });
-
 export default function configureDI() {
   const container: DIContainer = new DIContainer();
   container.add({
     uuidv4: uuidv4,
     fs: fs,
-    multer: upload,
+    multer: factory(configureMulter),
     JSON_CLUB_PATH: process.env.JSON_CLUB_PATH,
     ClubRepository: object(ClubRepository).construct(
       use("uuidv4"),
@@ -33,4 +27,18 @@ export default function configureDI() {
     ),
   });
   return container;
+}
+
+function configureMulter() {
+  const multerImagesStorage = process.env.MULTER_IMAGES_STORAGE || "uploads";
+  const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, multerImagesStorage);
+    },
+    filename: (req, file, cb) => {
+      cb(null, file.originalname);
+    },
+  });
+  const upload = multer({ storage: storage });
+  return upload;
 }

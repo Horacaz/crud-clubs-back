@@ -8,8 +8,8 @@ export default class ClubController extends AbstractController {
   public ClubService: ClubService;
   constructor(uploadMiddleWare: Multer, ClubService: ClubService) {
     super();
-    this.ClubService = ClubService;
     this.uploadMiddleWare = uploadMiddleWare;
+    this.ClubService = ClubService;
   }
 
   setupRoutes(app: Express) {
