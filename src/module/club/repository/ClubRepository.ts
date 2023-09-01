@@ -35,7 +35,7 @@ export default class ClubRepository {
       name: data.name || null,
       shortName: data.shortName || null,
       tla: data.tla || null,
-      crestUrl: `/uploads/${crest?.originalname}` || null,
+      crestUrl: `images/${crest?.originalname}` || null,
       address: data.address || null,
       phone: data.phone || null,
       website: data.website || null,
@@ -51,6 +51,10 @@ export default class ClubRepository {
 
   async deleteClub(IdClubToDelete: number) {
     const clubs = await JSON.parse(fs.readFileSync(this.jsonUrl, "utf-8"));
+    const clubToDelete = clubs.filter(
+      (team: IClub) => team.id === IdClubToDelete
+    )[0];
+    fs.unlinkSync(`public/${clubToDelete.crestUrl}`);
     const filteredClubs = clubs.filter(
       (team: IClub) => team.id !== IdClubToDelete
     );

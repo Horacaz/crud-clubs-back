@@ -30,7 +30,7 @@ export default function configureDI() {
 }
 
 function configureMulter() {
-  const multerImagesStorage = process.env.MULTER_IMAGES_STORAGE || "uploads";
+  const multerImagesStorage = process.env.MULTER_IMAGES_STORAGE || "./public/images";
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, multerImagesStorage);
