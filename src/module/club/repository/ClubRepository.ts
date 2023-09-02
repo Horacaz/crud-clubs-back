@@ -54,7 +54,11 @@ export default class ClubRepository {
     const clubToDelete = clubs.filter(
       (team: IClub) => team.id === IdClubToDelete
     )[0];
-    fs.unlinkSync(`public/${clubToDelete.crestUrl}`);
+      try {
+        fs.unlinkSync(`public/${clubToDelete.crestUrl}`);
+      } catch (error) {
+        console.log(error);
+      }
     const filteredClubs = clubs.filter(
       (team: IClub) => team.id !== IdClubToDelete
     );
