@@ -1,10 +1,10 @@
 # Crud Clubs API
 
-This repository is the Crud Crubls API that servers the [crud-clubs-front](https://github.com/Horacaz/crud-clubs-front) repository.
+This repository is the Crud Clubs API that serves the [crud-clubs-front](https://github.com/Horacaz/crud-clubs-front) repository.
 
 ## Getting Started
 
-To get start with this repository you may run `git clone https://github.com/Horacaz/hacker-news-reader`. After copying the files you will run `npm install` to install the project dependencies. When the dependecies are installed you may run `npm run dev` to start a development server and start previewing and editing the project locally.
+To get start with this repository you may run `git clone https://github.com/Horacaz/hacker-news-reader`. After copying the files you will run `npm install` to install the project dependencies. When the dependecies are installed you may run `npm run dev` to start a development server.
 
 ## Endpoints
 
@@ -60,4 +60,4 @@ To get start with this repository you may run `git clone https://github.com/Hora
 
 ## Techstack
 
-This project is built with Typescript on top of React, using the latest build provided by Vite. It is also unit-tested with Jest and React Testing Library.Husky is also implemented to lint every stagged files before every commit to ensure a consistent code style and that each test passes before pushing. For styling, this App uses the components provided by Chakra Ui.
+This project is built with Typescript on top of React, using the latest build provided by Vite. It is also unit-tested with Jest and React Testing Library.Husky is also implemented to lint every stagged files before every commit to ensure a consistent code style and that each test passes before pushing. For styling, this App uses the components provided by Chakra UI.
