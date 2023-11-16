@@ -1,15 +1,20 @@
 import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
 import IClub from "../../../types/club";
+
 export default class ClubRepository {
   uuid: typeof uuidv4;
-  filesystem: typeof fs;
+
+  fileSystem: typeof fs;
+
   jsonUrl: string;
 
-  constructor(uuid: typeof uuidv4, filesystem: typeof fs, jsonURL: string) {
+  constructor(uuid: typeof uuidv4, fileSystem: typeof fs, jsonURL: string) {
     this.uuid = uuid;
-    (this.filesystem = filesystem), (this.jsonUrl = jsonURL);
+    this.fileSystem = fileSystem;
+    this.jsonUrl = jsonURL;
   }
+
   async getAllClubs() {
     const teamsData = await JSON.parse(fs.readFileSync(this.jsonUrl, "utf-8"));
     return teamsData;
@@ -19,7 +24,7 @@ export default class ClubRepository {
     const clubs = await JSON.parse(fs.readFileSync(this.jsonUrl, "utf-8"));
     const clubId = Number(id);
     const clubData: IClub = clubs.filter(
-      (club: IClub) => club.id === clubId
+      (club: IClub) => club.id === clubId,
     )[0];
     return clubData;
   }
@@ -52,15 +57,15 @@ export default class ClubRepository {
   async deleteClub(IdClubToDelete: number) {
     const clubs = await JSON.parse(fs.readFileSync(this.jsonUrl, "utf-8"));
     const clubToDelete = clubs.filter(
-      (team: IClub) => team.id === IdClubToDelete
+      (team: IClub) => team.id === IdClubToDelete,
     )[0];
-      try {
-        fs.unlinkSync(`public/${clubToDelete.crestUrl}`);
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      fs.unlinkSync(`public/${clubToDelete.crestUrl}`);
+    } catch (error) {
+      console.log(error);
+    }
     const filteredClubs = clubs.filter(
-      (team: IClub) => team.id !== IdClubToDelete
+      (team: IClub) => team.id !== IdClubToDelete,
     );
     fs.writeFileSync(this.jsonUrl, JSON.stringify(filteredClubs));
   }
@@ -69,7 +74,7 @@ export default class ClubRepository {
     const teams = await JSON.parse(fs.readFileSync(this.jsonUrl, "utf-8"));
     const teamToEdit = teams.filter((team: IClub) => team.id === teamId)[0];
     const filteredData = Object.entries(data).filter(
-      (entry) => entry[1] !== ""
+      (entry) => entry[1] !== "",
     );
     const parsedData = Object.fromEntries(filteredData);
     const editedTeam = Object.assign(teamToEdit, parsedData);

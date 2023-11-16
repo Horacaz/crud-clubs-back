@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+
 export default abstract class AbstractController {
   abstract home(req: Request, res: Response): void;
   abstract addClub(req: Request, res: Response): void;

@@ -8,29 +8,9 @@ import {
   ClubRepository,
 } from "../module/club/module";
 
-export default function configureDI() {
-  const container: DIContainer = new DIContainer();
-  container.add({
-    uuidv4: uuidv4,
-    fs: fs,
-    multer: factory(configureMulter),
-    JSON_CLUB_PATH: process.env.JSON_CLUB_PATH,
-    ClubRepository: object(ClubRepository).construct(
-      use("uuidv4"),
-      use("fs"),
-      use("JSON_CLUB_PATH")
-    ),
-    ClubService: object(ClubService).construct(use("ClubRepository")),
-    ClubController: object(ClubController).construct(
-      use("multer"),
-      use("ClubService")
-    ),
-  });
-  return container;
-}
-
 function configureMulter() {
-  const multerImagesStorage = process.env.MULTER_IMAGES_STORAGE || "./public/images";
+  const multerImagesStorage =
+    process.env.MULTER_IMAGES_STORAGE || "./public/images";
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, multerImagesStorage);
@@ -39,6 +19,27 @@ function configureMulter() {
       cb(null, file.originalname);
     },
   });
-  const upload = multer({ storage: storage });
+  const upload = multer({ storage });
   return upload;
+}
+
+export default function configureDI() {
+  const container: DIContainer = new DIContainer();
+  container.add({
+    uuidv4,
+    fs,
+    multer: factory(configureMulter),
+    JSON_CLUB_PATH: process.env.JSON_CLUB_PATH,
+    ClubRepository: object(ClubRepository).construct(
+      use("uuidv4"),
+      use("fs"),
+      use("JSON_CLUB_PATH"),
+    ),
+    ClubService: object(ClubService).construct(use("ClubRepository")),
+    ClubController: object(ClubController).construct(
+      use("multer"),
+      use("ClubService"),
+    ),
+  });
+  return container;
 }

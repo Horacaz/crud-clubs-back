@@ -1,10 +1,13 @@
 import ClubRepository from "../repository/ClubRepository";
 import IClub from "../../../types/club";
+
 export default class ClubService {
   public ClubRepository: ClubRepository;
+
   constructor(Repository: ClubRepository) {
     this.ClubRepository = Repository;
   }
+
   async getAllClubs() {
     const allClubTeams = await this.ClubRepository.getAllClubs();
     return allClubTeams;
