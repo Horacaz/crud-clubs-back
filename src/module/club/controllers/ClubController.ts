@@ -28,36 +28,36 @@ export default class ClubController extends AbstractController {
 
   async home(req: Request, res: Response) {
     const allClubs = await this.clubService.getAllClubs();
-    res.status(200).send({ status: "Okey", data: allClubs });
+    res.status(200).send({ status: "200", data: allClubs });
   }
 
   async getClub(req: Request, res: Response) {
     const club = await this.clubService.getClub(Number(req.params.id));
-    res.status(200).send({ status: "Okey", data: club });
+    res.status(200).send({ status: "200", data: club });
   }
 
   async addClub(req: Request, res: Response) {
     if (req.file) {
       this.clubService.addClub(req.body, req.file);
-      res.status(200).send({ status: "Okey" });
+      res.status(200).send({ status: "200" });
     } else {
       this.clubService.addClub(req.body);
-      res.status(200).send({ status: "Okey" });
+      res.status(200).send({ status: "200" });
     }
   }
 
   async editClub(req: Request, res: Response) {
     if (req.file) {
       this.clubService.editClub(req.body, Number(req.params.id), req.file);
-      res.status(200).send({ status: "Okey" });
+      res.status(200).send({ status: "200" });
     } else {
       this.clubService.editClub(req.body, Number(req.params.id));
-      res.status(200).send({ status: "Okey" });
+      res.status(200).send({ status: "200" });
     }
   }
 
   async deleteClub(req: Request, res: Response) {
     this.clubService.deleteClub(Number(req.params.id));
-    res.status(200).send({ status: "Okey" });
+    res.status(200).send({ status: "200" });
   }
 }

@@ -5,7 +5,7 @@ import configureDI from "./config/di";
 
 dotenv.config();
 
-const app: Express = express();
+export const app: Express = express();
 const PORT = process.env.PORT || 3000;
 
 const container = configureDI();
@@ -17,6 +17,6 @@ app.use(cors());
 
 clubController.setupRoutes(app);
 
-app.listen(PORT, () => {
+export const server = app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
 });

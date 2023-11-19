@@ -1,6 +1,7 @@
 export default interface IClub {
   id: number;
   area?: {
+    id: number;
     name: string;
   };
   country?: string;
