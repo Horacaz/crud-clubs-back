@@ -13,6 +13,7 @@ const clubController = container.get("ClubController");
 
 app.use(express.static("public"));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 clubController.setupRoutes(app);

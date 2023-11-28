@@ -1,7 +1,8 @@
-import ClubRepository from "../repository/ClubRepository";
-import IClub from "../../../types/club";
+import { IClub } from "../../../types/club";
+import ClubRepository from "../repository/sqlite/ClubRepository";
+import AbstractService from "./abstractService";
 
-export default class ClubService {
+export default class ClubService implements AbstractService {
   public ClubRepository: ClubRepository;
 
   constructor(Repository: ClubRepository) {
@@ -18,17 +19,16 @@ export default class ClubService {
     return clubtoGet;
   }
 
-  addClub(club: IClub, crest?: Express.Multer.File) {
-    const clubData = club;
-    this.ClubRepository.addClub(clubData, crest);
+  async addClub(club: IClub) {
+    this.ClubRepository.addClub(club);
   }
 
-  editClub(club: IClub, clubId: number, crest?: Express.Multer.File) {
+  async editClub(club: IClub, clubId: number) {
     const dataToEdit = club;
-    this.ClubRepository.editClub(dataToEdit, clubId, crest);
+    this.ClubRepository.editClub(dataToEdit, clubId);
   }
 
-  deleteClub(clubId: number) {
+  async deleteClub(clubId: number) {
     const clubToDelete = clubId;
     this.ClubRepository.deleteClub(clubToDelete);
   }

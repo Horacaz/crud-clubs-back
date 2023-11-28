@@ -1,7 +1,7 @@
 import DIContainer, { object, use, factory } from "rsdi";
-import { v4 as uuidv4 } from "uuid";
-import fs from "fs";
+import path from "path";
 import multer from "multer";
+import Database from "better-sqlite3";
 import {
   ClubController,
   ClubService,
@@ -16,25 +16,26 @@ function configureMulter() {
       cb(null, multerImagesStorage);
     },
     filename: (req, file, cb) => {
-      cb(null, file.originalname);
+      cb(null, Date.now() + path.extname(file.originalname));
     },
   });
   const upload = multer({ storage });
   return upload;
 }
 
+function setupDatabase() {
+  const db = new Database(process.env.DB_PATH as string, {
+    verbose: console.log,
+  });
+  return db;
+}
+
 export default function configureDI() {
   const container: DIContainer = new DIContainer();
   container.add({
-    uuidv4,
-    fs,
     multer: factory(configureMulter),
-    JSON_CLUB_PATH: process.env.JSON_CLUB_PATH,
-    ClubRepository: object(ClubRepository).construct(
-      use("uuidv4"),
-      use("fs"),
-      use("JSON_CLUB_PATH"),
-    ),
+    Database: factory(setupDatabase),
+    ClubRepository: object(ClubRepository).construct(use("Database")),
     ClubService: object(ClubService).construct(use("ClubRepository")),
     ClubController: object(ClubController).construct(
       use("multer"),

@@ -1,7 +1,8 @@
 import { Request, Response, Express } from "express";
 import { Multer } from "multer";
 import ClubService from "../services/ClubService";
-import AbstractController from "../../abstractController";
+import AbstractController from "./abstractController";
+import { mapClubDataToEntity } from "../mappers/clubMapper";
 
 export default class ClubController extends AbstractController {
   public uploadMiddleWare: Multer;
@@ -22,7 +23,11 @@ export default class ClubController extends AbstractController {
       this.uploadMiddleWare.single("crest"),
       this.addClub.bind(this),
     );
-    app.patch("/api/club/:id", this.editClub.bind(this));
+    app.patch(
+      "/api/club/:id",
+      this.uploadMiddleWare.single("crest"),
+      this.editClub.bind(this),
+    );
     app.delete("/api/club/:id", this.deleteClub.bind(this));
   }
 
@@ -32,32 +37,31 @@ export default class ClubController extends AbstractController {
   }
 
   async getClub(req: Request, res: Response) {
-    const club = await this.clubService.getClub(Number(req.params.id));
+    const clubId = Number(req.params.id);
+    const club = await this.clubService.getClub(clubId);
     res.status(200).send({ status: "200", data: club });
   }
 
   async addClub(req: Request, res: Response) {
-    if (req.file) {
-      this.clubService.addClub(req.body, req.file);
-      res.status(200).send({ status: "200" });
-    } else {
-      this.clubService.addClub(req.body);
-      res.status(200).send({ status: "200" });
-    }
+    const club = mapClubDataToEntity(req.body);
+    club.crestUrl = req.file?.path || null;
+
+    this.clubService.addClub(club);
+    res.status(200).send({ status: "200", message: "Club Added" });
   }
 
   async editClub(req: Request, res: Response) {
-    if (req.file) {
-      this.clubService.editClub(req.body, Number(req.params.id), req.file);
-      res.status(200).send({ status: "200" });
-    } else {
-      this.clubService.editClub(req.body, Number(req.params.id));
-      res.status(200).send({ status: "200" });
-    }
+    const clubId = Number(req.params.id);
+    const club = mapClubDataToEntity(req.body);
+    club.crestUrl = req.file?.path || null;
+    this.clubService.editClub(club, clubId);
+    res.status(200).send({ status: "200", message: "Club Edited" });
   }
 
   async deleteClub(req: Request, res: Response) {
-    this.clubService.deleteClub(Number(req.params.id));
-    res.status(200).send({ status: "200" });
+    const clubId = Number(req.params.id);
+
+    this.clubService.deleteClub(clubId);
+    res.status(200).send({ status: "200", message: "Club Deleted" });
   }
 }
