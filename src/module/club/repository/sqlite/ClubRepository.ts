@@ -52,7 +52,8 @@ export default class ClubRepository extends AbstractRepository {
       clubData.clubColors,
       clubData.venue,
     ];
-    statement.run(clubFields);
+    const result = statement.run(clubFields);
+    return result;
   }
 
   async deleteClub(clubId: number) {
@@ -63,7 +64,8 @@ export default class ClubRepository extends AbstractRepository {
 
     const clubStatement = this.db.prepare("DELETE FROM clubs WHERE id = ?");
     const clubToDelete = clubId;
-    clubStatement.run(clubToDelete);
+    const result = clubStatement.run(clubToDelete);
+
     if (crestRow.crest_url) {
       try {
         fs.unlinkSync(path.resolve(crestRow.crest_url as string));
@@ -71,6 +73,7 @@ export default class ClubRepository extends AbstractRepository {
         throw new Error("Couldn't delete Crest Image");
       }
     }
+    return result;
   }
 
   async editClub(clubData: IClub, clubId: number) {
@@ -99,6 +102,8 @@ export default class ClubRepository extends AbstractRepository {
         WHERE id = ?
     `);
 
-    statement.run(clubId, clubEditFields);
+    const result = statement.run(clubId, clubEditFields);
+
+    return result;
   }
 }

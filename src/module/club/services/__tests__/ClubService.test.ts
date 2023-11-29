@@ -2,6 +2,10 @@ import ClubRepository from "../../repository/sqlite/ClubRepository";
 import ClubService from "../ClubService";
 import { IClub } from "../../../../types/club";
 
+beforeAll(() => {
+  jest.clearAllMocks();
+});
+
 const mockedRepositoryInstance = {
   getAllClubs: jest.fn(),
   getClub: jest.fn(),

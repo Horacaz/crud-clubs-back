@@ -3,6 +3,10 @@ import { Request, Response } from "express";
 import ClubController from "../ClubController";
 import ClubService from "../../services/ClubService";
 
+beforeAll(() => {
+  jest.clearAllMocks();
+});
+
 const multerMock = {
   single: jest.fn(),
 } as unknown as jest.Mocked<Multer>;
@@ -23,7 +27,7 @@ const mockReq = {
   },
   body: {
     name: "test",
-    code: "test",
+    country: "test",
     shortName: "test",
     tla: "test",
     address: "test",
@@ -33,7 +37,6 @@ const mockReq = {
     founded: 1,
     clubColors: "test",
     venue: "test",
-    lastUpdated: "test",
     crestUrl: "test",
   },
 } as unknown as jest.Mocked<Request>;
@@ -62,6 +65,24 @@ describe("ClubController", () => {
   test("ClubController.editClub", () => {
     controller.editClub(mockReq, mockRes);
     expect(serviceMock.editClub).toHaveBeenCalledTimes(1);
+    expect(serviceMock.editClub).toHaveBeenCalledWith(
+      {
+        id: undefined,
+        name: "test",
+        shortName: "test",
+        tla: "test",
+        address: "test",
+        phone: "test",
+        website: "test",
+        email: "test",
+        founded: 1,
+        clubColors: "test",
+        venue: "test",
+        country: "test",
+        crestUrl: null,
+      },
+      1,
+    );
   });
 
   test("ClubController.deleteClub", () => {
